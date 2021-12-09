@@ -1,0 +1,18 @@
+# We need golang 1.16. I found this from docker hub
+FROM golang:1.16-alpine
+
+EXPOSE 8080
+
+WORKDIR /usr/src/app
+
+# Checking that go has been installed
+RUN go version
+
+# Copy all of the content from the project to the image
+COPY . .
+
+# Building the project
+RUN go build
+
+# Executing the project
+CMD ["./server"]

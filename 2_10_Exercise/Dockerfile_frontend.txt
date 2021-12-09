@@ -1,0 +1,27 @@
+# We need ruby 3.0.0. I found this from docker hub
+FROM ruby:3.0.0
+
+# Exposing port 5000
+EXPOSE 5000
+
+# Setting working directory
+WORKDIR /usr/src/app
+
+# Installing node
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
+RUN apt install -y nodejs
+
+# Copy all of the content from the project to the image
+COPY . .
+
+# Installing node packages
+RUN npm install
+
+# Generating static files into build folder
+RUN API_URL=http://localhost/api npm run build
+
+# Installing serve package
+RUN npm install -g serve
+
+# Command
+CMD ["serve", "-s", "-l", "5000", "build"]
