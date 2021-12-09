@@ -1,0 +1,15 @@
+# Starting from node:14
+FROM node:14
+
+# Setting working directory
+WORKDIR /usr/src/app
+
+# Copy package and index files from the project to the image
+COPY package* ./
+COPY index.js ./
+
+# Installing node packages
+RUN npm install
+
+# Installing nodemon
+RUN npm install --save-dev nodemon
