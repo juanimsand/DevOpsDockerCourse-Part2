@@ -1,0 +1,5 @@
+# First command used. This command was not enough for pass the button green test!
+ sudo docker-compose up
+
+# Scaling compute service of docker-compose.yml. This command makes the button turn green and the test passed!
+sudo docker-compose up --scale compute=2
