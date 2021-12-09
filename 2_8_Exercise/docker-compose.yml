@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+    db:
+      image: postgres:13.2-alpine
+      restart: unless-stopped
+      environment:
+        - POSTGRES_PASSWORD=myexample
+      container_name: db_backend_2_8
+    redis:
+      image: redis
+      build: .
+      container_name: 2-8-redis
+    backend:
+      image: example-backend
+      build: .
+      environment:
+        - REQUEST_ORIGIN=http://localhost:5000
+        - REDIS_HOST=redis
+        - POSTGRES_HOST=db
+        - POSTGRES_PASSWORD=myexample
+      container_name: 2-8-backend
+      depends_on:
+        - db
+    frontend:
+      image: example-frontend
+      build: .
+      container_name: 2-8-frontend
+    web:
+      image: nginx
+      ports:
+        - 80:80
+      environment:
+        - NGINX_HOST=http://localhost
+        - NGINX_PORT=80
+      volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf
+      depends_on:
+        - backend
+        - frontend
+      container_name: 2-8-nginx
